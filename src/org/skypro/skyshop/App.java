@@ -2,6 +2,7 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
 
 public class App {
 
@@ -10,13 +11,13 @@ public class App {
         ProductBasket basket = new ProductBasket();
 
         //Добавление продукта в корзину
-        Product product1 = new Product("Хлеб бородинский", 49);
+        SimpleProduct product1 = new SimpleProduct("Хлеб бородинский", 49);
         System.out.println("1. Добавление продукта в корзину");
         basket.addProductInBasket(product1);
 
 
         //Добавление продукта в заполненную корзину, в которой нет свободного места
-        Product product2 = new Product("Фарш куриный", 249);
+        SimpleProduct product2 = new SimpleProduct("Фарш куриный", 249);
         System.out.println("2. Добавление продукта в заполненную корзину, в которой нет свободного места");
         basket.addProductInBasket(product2);
 

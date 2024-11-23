@@ -1,6 +1,9 @@
 package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 
 public class ProductBasket {
     private Product[] products;
@@ -12,19 +15,18 @@ public class ProductBasket {
 
     // Метод инициализации продуктов
     private void initializeProducts() {
-        products[0] = new Product("Помидоры на ветке", 229);
-        products[1] = new Product("Огурцы", 123);
-        products[2] = new Product("Куриное филе", 329);
-        products[3] = new Product("Фарш говяжий", 429);
-
+        products[0] = new SimpleProduct("Помидоры на ветке", 229);
+        products[1] = new DiscountedProduct("Огурцы", 123, 10); // Пример товара со скидкой
+        products[2] = new SimpleProduct("Куриное филе", 329);
+        products[3] = new FixPriceProduct("Фарш говяжий"); // Пример товара с фиксированной ценой
     }
 
     // Метод добавления продукта в корзину
     public void addProductInBasket(Product product) {
-        for (int i = 0; i < products.length; i = i + 1) {
+        for (int i = 0; i < products.length; i++) {
             if (products[i] == null) {
                 products[i] = product;
-                return;  // Продукт добавлен, выходим из метода
+                return;
             }
         }
         System.out.println("Невозможно добавить продукт, корзина заполнена");
@@ -48,15 +50,26 @@ public class ProductBasket {
 
     // Метод для отображения всех продуктов в корзине
     public void displayProductsInBasket() {
+        int specialProductsCount = 0;
+        int totalCost = 0;
         boolean isEmpty = true;
+
         for (Product product : products) {
             if (product != null) {
                 isEmpty = false;
-                System.out.println(product.getNameProduct() + ": " + product.getPriceProduct());
+                System.out.println(product.toString());
+                totalCost += product.getPriceProduct();
+                if (product.isSpecial()) {
+                    specialProductsCount++;
+                }
             }
         }
+
         if (isEmpty) {
             System.out.println("В корзине пусто");
+        } else {
+            System.out.println("Итого: " + totalCost);
+            System.out.println("Специальных товаров: " + specialProductsCount);
         }
     }
 
