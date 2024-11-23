@@ -2,36 +2,41 @@ package org.skypro.skyshop.product;
 
 import java.util.Objects;
 
-public class Product {
+public abstract class Product {
     private String nameProduct;
-    private int priceProduct;
 
-    public Product(String nameProduct, int priceProduct) {
+
+    public Product(String nameProduct) {
         this.nameProduct = nameProduct;
-        this.priceProduct = priceProduct;
     }
 
     public String getNameProduct() {
         return this.nameProduct;
     }
 
-    public int getPriceProduct() {
-        return this.priceProduct;
+    public abstract int getPriceProduct();
+
+    // Абстрактный метод, который определяет, является ли товар специальным
+    public boolean isSpecial() {
+        return false; // По умолчанию товар не специальный
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o; // Приведение к типу Product
-        return priceProduct == product.priceProduct && Objects.equals(nameProduct, product.nameProduct);
+        Product product = (Product) o;
+        return Objects.equals(nameProduct, product.nameProduct);
     }
-
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameProduct, priceProduct);
+        return Objects.hash(nameProduct);
     }
+
+    // Переопределим метод toString в наследниках для правильного вывода
+    @Override
+    public abstract String toString();
 
     }
 
