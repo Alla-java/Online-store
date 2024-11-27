@@ -1,9 +1,11 @@
 package org.skypro.skyshop.product;
 
+import org.skypro.skyshop.common.Searchable;
+
 import java.util.Objects;
 
-public abstract class Product {
-    private String nameProduct;
+public abstract class Product implements Searchable {
+    private final String nameProduct;
 
 
     public Product(String nameProduct) {
@@ -34,9 +36,23 @@ public abstract class Product {
         return Objects.hash(nameProduct);
     }
 
-    // Переопределим метод toString в наследниках для правильного вывода
+    @Override
+    public String getSearchTerm() {
+        return getNameProduct();
+    }
+
+    @Override
+    public String getName() {
+        return getNameProduct();
+    }
+
+    @Override
+    public String getStringRepresentation() {
+        return getNameProduct() + " — PRODUCT";
+    }
+
     @Override
     public abstract String toString();
 
-    }
+}
 
