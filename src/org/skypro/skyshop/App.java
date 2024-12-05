@@ -1,6 +1,9 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.common.SearchEngine;
+import org.skypro.skyshop.common.Searchable;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
@@ -60,6 +63,54 @@ public class App {
         System.out.println("10. Поиск товара по имени в пустой корзине");
         boolean result3 = basket.checkProductInBasket("Холодец");
         System.out.println(result3);
+
+
+
+        //Создайте один объект типа SearchEngine и добавьте в него все товары, которые создаются для проверки других методов
+        SearchEngine engine = new SearchEngine(10);
+        engine.add(product1);
+        engine.add(product2);
+
+        //Создайте несколько объектов типа Article и добавьте их в Search Engine
+        Article article1 = new Article("Фасоль: польза и вред для организма", "Текст статьи про шакшуку");
+        Article article2 = new Article("Рыбы Черного моря: гид от шеф-повара", "Текст статьи про рыб");
+        Article article3 = new Article("Чем полезна жимолость и как ее готовить", "Текст статьи про жимолость");
+        engine.add(article1);
+        engine.add(article2);
+        engine.add(article3);
+
+        // Пытаемся найти товары и статьи по запросу "Фасоль"
+        Searchable[] results = engine.search("Фасоль");
+
+        // Выводим результаты поиска
+        System.out.println("Результаты поиска по запросу 'Фасоль':");
+        for (Searchable result4 : results) {
+            if (result4 != null) {
+                System.out.println(result4.getStringRepresentation());
+            }
+        }
+
+        // Пытаемся найти товары и статьи по запросу "Рыбы"
+        results = engine.search("Рыбы");
+
+        // Выводим результаты поиска
+        System.out.println("Результаты поиска по запросу 'Рыбы':");
+        for (Searchable result5 : results) {
+            if (result5 != null) {
+                System.out.println(result5.getStringRepresentation());
+            }
+        }
+
+        // Пытаемся найти товары и статьи по запросу "Хлеб"
+        results = engine.search("Хлеб");
+
+        // Выводим результаты поиска
+        System.out.println("Результаты поиска по запросу 'Хлеб':");
+        for (Searchable result6 : results) {
+            if (result6 != null) {
+                System.out.println(result6.getStringRepresentation());
+            }
+        }
     }
 
 }
