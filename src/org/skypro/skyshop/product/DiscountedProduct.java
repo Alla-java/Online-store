@@ -6,8 +6,11 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String nameProduct, int basePrice, int discountPercentage) {
         super(nameProduct); // Передаем имя в конструктор родительского класса
+        if (basePrice <= 0) {
+            throw new IllegalArgumentException("basePrice должна быть строго больше 0");
+        }
         if (discountPercentage < 0 || discountPercentage > 100) {
-            throw new IllegalArgumentException("Скидка должна быть в пределах от 0 до 100%");
+            throw new IllegalArgumentException("discountPercentage должна быть в пределах от 0 до 100%");
         }
         this.basePrice = basePrice;
         this.discountPercentage = discountPercentage;

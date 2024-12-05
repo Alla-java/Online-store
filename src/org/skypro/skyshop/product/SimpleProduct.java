@@ -5,6 +5,9 @@ public class SimpleProduct extends Product {
 
     public SimpleProduct(String nameProduct, int priceProduct) {
         super(nameProduct); // Передача имени в конструктор родительского класса
+        if (priceProduct <= 0) {
+            throw new IllegalArgumentException("priceProduct должна быть больше 0");
+        }
         this.priceProduct = priceProduct;
     }
 
