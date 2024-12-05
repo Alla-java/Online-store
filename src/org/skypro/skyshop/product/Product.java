@@ -9,6 +9,9 @@ public abstract class Product implements Searchable {
 
 
     public Product(String nameProduct) {
+        if (nameProduct == null || nameProduct.isBlank()) {
+            throw new IllegalArgumentException("nameProduct не может быть null, пустым или состоять только из пробелов");
+        }
         this.nameProduct = nameProduct;
     }
 

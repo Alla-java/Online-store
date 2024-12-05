@@ -2,10 +2,13 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.common.BestResultNotFound;
 import org.skypro.skyshop.common.SearchEngine;
 import org.skypro.skyshop.common.Searchable;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.common.SearchEngine;
 
 public class App {
 
@@ -111,7 +114,63 @@ public class App {
                 System.out.println(result6.getStringRepresentation());
             }
         }
-    }
 
+
+        //Домашняя работа по теме: Исключения в Java
+
+        SimpleProduct product3 = new SimpleProduct("                ", 49); // Ошибка: имя состоит из пробелов
+        SimpleProduct product4 = new SimpleProduct("Пиво Жигулевское", 0); // Ошибка: цена 0
+        DiscountedProduct product5 = new DiscountedProduct("Лапша Роллтон", -100, 10); // Ошибка: базовая цена отрицательная
+        DiscountedProduct product6 = new DiscountedProduct("Овес", 500, 110); // Ошибка: скидка > 100%
+        SimpleProduct product7 = new SimpleProduct(null, 49); // Ошибка: имя не заполнено
+
+        try {
+             System.out.println("SimpleProduct created: " + product3);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error creating SimpleProduct: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("SimpleProduct created: " + product4);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании SimpleProduct: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("DiscountedProduct created: " + product5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании DiscountedProduct: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("DiscountedProduct created: " + product6);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании DiscountedProduct: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("SimpleProduct created: " + product7);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании SimpleProduct: " + e.getMessage());
+        }
+
+        // Демонстрация работы метода findBestMatch
+
+        // 1. Сценарий, когда нужный объект существует
+        try {
+            Searchable bestMatch = engine.findBestMatch("Хлеб");
+            System.out.println("Наиболее подходящий объект: " + bestMatch.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+
+        // 2. Сценарий, когда метод выбрасывает исключение
+        try {
+            Searchable bestMatch = engine.findBestMatch("Шоколад");
+            System.out.println("Наиболее подходящий объект: " + bestMatch.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 
