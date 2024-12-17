@@ -5,38 +5,41 @@ import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ProductBasket {
-    private List<Product> products;
+    private Map<String, List<Product>> products;
 
     public ProductBasket() {
-        products = new ArrayList<>();
+        products = new HashMap<>();
         initializeProducts();
     }
 
     // Метод инициализации продуктов
     private void initializeProducts() {
-        products.add(new SimpleProduct("Помидоры на ветке", 229));
-        products.add(new DiscountedProduct("Огурцы", 123, 10)); // Пример товара со скидкой
-        products.add(new SimpleProduct("Куриное филе", 329));
-        products.add(new FixPriceProduct("Фарш говяжий")); // Пример товара с фиксированной ценой
+        addProduct(new SimpleProduct("Помидоры на ветке", 229));
+        addProduct(new DiscountedProduct("Огурцы", 123, 10)); // Пример товара со скидкой
+        addProduct(new SimpleProduct("Куриное филе", 329));
+        addProduct(new FixPriceProduct("Фарш говяжий")); // Пример товара с фиксированной ценой
+    }
+
+    //Вспомогательный метод для добавления продукта в корзину
+    private void addProduct(Product product) {
+        String productName = product.getNameProduct();
+        products.putIfAbsent(productName, new ArrayList<>());
+        products.get(productName).add(product);
     }
 
     // Метод добавления продукта в корзину
     public void addProductInBasket(Product product) {
-        products.add(product);
+        addProduct(product);
     }
 
     // Метод для получения общей стоимости корзины
     public int getTotalCostBasket() {
         int sum = 0;
-        if (products.isEmpty()) {
-            System.out.println("Итого: 0");
-        } else {
-            for (Product product : products) {
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
                 sum += product.getPriceProduct();
             }
         }
@@ -51,11 +54,13 @@ public class ProductBasket {
         if (products.isEmpty()) {
             System.out.println("В корзине пусто");
         } else {
-            for (Product product : products) {
-                System.out.println(product.toString());
-                totalCost += product.getPriceProduct();
-                if (product.isSpecial()) {
-                    specialProductsCount++;
+            for (List<Product> productList : products.values()) {
+                for (Product product : productList) {
+                    System.out.println(product.toString());
+                    totalCost += product.getPriceProduct();
+                    if (product.isSpecial()) {
+                        specialProductsCount++;
+                    }
                 }
             }
             System.out.println("Итого: " + totalCost);
@@ -64,19 +69,10 @@ public class ProductBasket {
     }
 
 
-    //Метод, проверяющий продукт в корзине по имени
+    // Метод, проверяющий продукт в корзине по имени
     public boolean checkProductInBasket(String nameProduct) {
-        if (products.isEmpty()) {
-            System.out.println("В корзине пусто");
-            return false;
-        }
-
-        for (Product product : products) {
-            if (product != null && product.getNameProduct().equalsIgnoreCase(nameProduct)) {
-                return true;
-            }
-        }
-        return false;
+        List<Product> productList = products.get(nameProduct);
+        return productList != null && !productList.isEmpty();
     }
 
     //Метод для очистки корзины
@@ -84,31 +80,25 @@ public class ProductBasket {
         products.clear();
     }
 
-    //Метод для удаления продукта по имени из корзины
+    // Метод для удаления продукта по имени из корзины
     public List<Product> removeProductsByName(String name) {
         List<Product> removedProducts = new ArrayList<>();
-        Iterator<Product> iterator = products.iterator();
+        List<Product> productList = products.get(name);
 
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getNameProduct().equalsIgnoreCase(name)) {
-                iterator.remove(); // Удаляем продукт из списка
-                removedProducts.add(product); // Добавляем его в список удалённых продуктов
-            }
+        if (productList != null) {
+            removedProducts.addAll(productList);
+            productList.clear();
         }
+
         if (removedProducts.isEmpty()) {
-            System.out.println("Список пуст"); // Если искомого продукта в корзине нет, выводим сообщение
-        }
-        else {
+            System.out.println("Список пуст");
+        } else {
             System.out.println("Удаленные продукты:");
             for (Product product : removedProducts) {
-                System.out.println(product.toString()); // Выводим каждый удалённый продукт
+                System.out.println(product.toString());
             }
         }
-        return removedProducts; // Возвращаем список удалённых продуктов
+
+        return removedProducts;
     }
-
-
-
-
 }
