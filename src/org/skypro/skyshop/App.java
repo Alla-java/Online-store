@@ -11,6 +11,7 @@ import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.common.SearchEngine;
 
 import java.util.List;
+import java.util.Map;
 
 public class App {
 
@@ -67,12 +68,12 @@ public class App {
         engine.add(article4);
 
         // Пытаемся найти товары и статьи по запросу "Фасоль"
-        List<Searchable> results = engine.search("фасоль");
+        Map<String, Searchable> results = engine.search("фасоль");
 
         // Выводим результаты поиска
         System.out.println("Результаты поиска по запросу 'Фасоль':");
-        for (Searchable result4 : results) {
-                System.out.println(result4.getStringRepresentation());
+        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+            System.out.println(entry.getValue().getStringRepresentation());
         }
 
         // Пытаемся найти товары и статьи по запросу "Рыбы"
@@ -80,8 +81,8 @@ public class App {
 
         // Выводим результаты поиска
         System.out.println("Результаты поиска по запросу 'Рыбы':");
-        for (Searchable result5 : results) {
-                System.out.println(result5.getStringRepresentation());
+        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+            System.out.println(entry.getValue().getStringRepresentation());
         }
 
         // Пытаемся найти товары и статьи по запросу "Хлеб"
@@ -89,8 +90,8 @@ public class App {
 
         // Выводим результаты поиска
         System.out.println("Результаты поиска по запросу 'Хлеб':");
-        for (Searchable result6 : results) {
-                System.out.println(result6.getStringRepresentation());
+        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+            System.out.println(entry.getValue().getStringRepresentation());
         }
 
         // Демонстрация работы метода findBestMatch

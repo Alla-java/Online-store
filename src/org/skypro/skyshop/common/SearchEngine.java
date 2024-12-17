@@ -1,9 +1,9 @@
 package org.skypro.skyshop.common;
 
-import org.skypro.skyshop.common.Searchable;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class SearchEngine {
     private final List<Searchable> searchables;
@@ -17,16 +17,15 @@ public class SearchEngine {
     }
 
 
-    public List<Searchable> search(String searchTerm) {
-        List<Searchable> resultList = new ArrayList<>(); // Список для хранения результатов поиска
+    public Map<String, Searchable> search(String searchTerm) {
+        Map<String, Searchable> resultMap = new TreeMap<>(); // Список для хранения результатов поиска
 
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.getSearchTerm().contains(searchTerm)) {
-                resultList.add(searchable);
+                resultMap.put(searchable.getName(), searchable);
             }
         }
-
-        return resultList;
+        return resultMap;
     }
 
 
@@ -67,9 +66,4 @@ public class SearchEngine {
 
         return count;
     }
-
-
-
-
-
 }
