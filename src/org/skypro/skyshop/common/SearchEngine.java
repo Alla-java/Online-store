@@ -1,15 +1,12 @@
 package org.skypro.skyshop.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class SearchEngine {
-    private final List<Searchable> searchables;
+    private final Set<Searchable> searchables;
 
     public SearchEngine() {
-        this.searchables = new ArrayList<>();
+        this.searchables = new TreeSet<>(new SearchableComparator());
     }
 
     public void add(Searchable searchable) {
@@ -17,15 +14,15 @@ public class SearchEngine {
     }
 
 
-    public Map<String, Searchable> search(String searchTerm) {
-        Map<String, Searchable> resultMap = new TreeMap<>(); // Список для хранения результатов поиска
+    public Set<Searchable> search(String searchTerm) {
+        Set<Searchable> resultSet = new TreeSet<>(new SearchableComparator()); // Список для хранения результатов поиска
 
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.getSearchTerm().contains(searchTerm)) {
-                resultMap.put(searchable.getName(), searchable);
+                resultSet.add(searchable);
             }
         }
-        return resultMap;
+        return resultSet;
     }
 
 
@@ -66,4 +63,27 @@ public class SearchEngine {
 
         return count;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SearchEngine that = (SearchEngine) o;
+        return Objects.equals(searchables, that.searchables);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(searchables);
+    }
+
+
+
+
+
+
+
 }
