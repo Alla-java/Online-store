@@ -1,6 +1,6 @@
 package org.skypro.skyshop.common;
 
-public interface Searchable {
+public interface Searchable{
     //Метод для получения термина поиска (search term)
     String getSearchTerm();
 
@@ -11,4 +11,5 @@ public interface Searchable {
     default String getStringRepresentation() {
         return getName() + " — " + getClass().getSimpleName();
     }
+
 }
