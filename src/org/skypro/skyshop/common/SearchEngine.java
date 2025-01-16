@@ -1,6 +1,7 @@
 package org.skypro.skyshop.common;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Set<Searchable> searchables;
@@ -13,18 +14,11 @@ public class SearchEngine {
         searchables.add(searchable); // Добавляем объект в список
     }
 
-
     public Set<Searchable> search(String searchTerm) {
-        Set<Searchable> resultSet = new TreeSet<>(new SearchableComparator()); // Список для хранения результатов поиска
-
-        for (Searchable searchable : searchables) {
-            if (searchable != null && searchable.getSearchTerm().contains(searchTerm)) {
-                resultSet.add(searchable);
-            }
-        }
-        return resultSet;
+        return searchables.stream() // Преобразуем коллекцию searchables в поток stream API
+                .filter(searchable -> searchable != null && searchable.getSearchTerm().contains(searchTerm)) // Фильтруем по условию
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new SearchableComparator()))); // Лямбда-выражение для Supplier
     }
-
 
     //Метод поиска наиболее подходящего объекта
     public Searchable findBestMatch(String search) throws BestResultNotFound {

@@ -37,35 +37,36 @@ public class ProductBasket {
 
     // Метод для получения общей стоимости корзины
     public int getTotalCostBasket() {
-        int sum = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                sum += product.getPriceProduct();
-            }
-        }
-        return sum;
+        return products.values().stream()  // Преобразуем Map в Stream значений (List<Product>)
+                .flatMap(Collection::stream)   // Превращаем List<Product> в плоский Stream<Product>
+                .mapToInt(Product::getPriceProduct)  // Преобразуем каждый товар в его стоимость (int)
+                .sum();  // Суммируем все стоимости
     }
 
     // Метод для отображения всех продуктов в корзине
     public void displayProductsInBasket() {
-        int specialProductsCount = 0;
-        int totalCost = 0;
-
         if (products.isEmpty()) {
             System.out.println("В корзине пусто");
         } else {
-            for (List<Product> productList : products.values()) {
-                for (Product product : productList) {
-                    System.out.println(product.toString());
-                    totalCost += product.getPriceProduct();
-                    if (product.isSpecial()) {
-                        specialProductsCount++;
-                    }
-                }
-            }
+            int totalCost = products.values().stream()  // Преобразуем Map в Stream значений (List<Product>)
+                    .flatMap(Collection::stream)   // Превращаем List<Product> в плоский Stream<Product>
+                    .peek(product -> System.out.println(product.toString()))  // Выводим каждый продукт
+                    .mapToInt(Product::getPriceProduct)  // Преобразуем каждый товар в его стоимость (int)
+                    .sum();  // Суммируем все стоимости
+
+            int specialProductsCount = getSpecialCount();  // Подсчитываем количество специальных товаров
+
             System.out.println("Итого: " + totalCost);
             System.out.println("Специальных товаров: " + specialProductsCount);
         }
+    }
+
+    //Метод для подсчета количества специальных товаров
+    private int getSpecialCount() {
+        return (int) products.values().stream()  // Преобразуем Map в Stream значений (List<Product>)
+                .flatMap(Collection::stream)   // Превращаем List<Product> в плоский Stream<Product>
+                .filter(Product::isSpecial)  // Фильтруем по признаку "специальный товар"
+                .count();  // Подсчитываем количество таких товаров
     }
 
 
@@ -94,9 +95,8 @@ public class ProductBasket {
             System.out.println("Список пуст");
         } else {
             System.out.println("Удаленные продукты:");
-            for (Product product : removedProducts) {
-                System.out.println(product.toString());
-            }
+            removedProducts.stream()
+                    .forEach(product -> System.out.println(product.toString()));  // Используем forEach для вывода
         }
 
         return removedProducts;
